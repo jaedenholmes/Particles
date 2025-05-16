@@ -70,28 +70,35 @@ namespace Matrices
 		if (a.getCols() != b.getRows())
 			throw runtime_error("Error: dimensions must agree");
 
-		for (int i = 0; i < a.getRows(); ++i)
+		for (int i = 0; i < c.getRows(); ++i)
 		{
-			for (int j = 0; j < b.getCols(); ++j)
+			for (int j = 0; j < c.getCols(); ++j)
 			{
 				for (int k = 0; k < a.getCols(); ++k)
 				{
-					c(i, j) += a(i, k) * b(k, j);
+					c(i, j) += (a(i, k) * b(k, j));
 				}
 			}
 		}
 		return c;
 	}
-	
-	RotationMatrix::RotationMatrix(double theta)
+
+	RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)
 	{
+		a = { { cos(theta), -sin(theta)},{ sin(theta), cos(theta) } };
 	}
 
-	ScalingMatrix::ScalingMatrix(double scale)
+	ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
 	{
+		a = { {scale, 0}, {0, scale } };
 	}
 
-	TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols)
+	TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols) : Matrix(2, nCols)
 	{
+		for (int col = 0; col < nCols; col++)
+		{
+			a[0][col] = xShift;
+			a[1][col] = yShift;
+		}
 	}
 }
